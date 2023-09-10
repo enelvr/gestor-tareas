@@ -1,0 +1,30 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th {
+  text-align: left;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  border-bottom: 1px solid #e2e8f0;
+  color: #3c3744;
+}
+
+.td {
+  padding: 0.50rem 1rem;
+  color: #3c3744;
+}
+
+
+.th-action {
+  border-bottom: 1px solid #e2e8f0;
+  width: 3rem;
+  text-align: center;
+  padding-right: 0.85rem;
+}
+
+.td-action {
+  width: 3rem;
+  text-align: center;
+}

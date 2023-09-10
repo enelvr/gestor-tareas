@@ -1,0 +1,102 @@
+.btn {
+	@apply px-4 py-2 flex flex-row radius-3;
+}
+
+.btn:focus {
+	@apply outline-none;
+}
+
+.btn-xs {
+  @apply font-bold py-2 px-2 rounded-md focus:outline-none mr-2
+}
+
+.btn-xs:hover {
+  filter: brightness(90%);
+}
+
+.icon {
+  @apply w-4 h-4 flex items-center justify-center
+}
+
+.btn-yellow {
+  @apply bg-yellow-500 text-white
+}
+
+.btn-red {
+  @apply text-sm bg-red-600 text-white
+}
+
+.btn-blue {
+  @apply text-sm text-white bg-blue;
+}
+
+.btn-verde {
+  @apply text-sm text-white bg-verde;
+}
+
+.links {
+  @apply flex w-full justify-between rounded-lg px-4 py-2 text-left text-sm font-medium text-acents;
+}
+.links-active {
+  @apply bg-acents text-gray-800;
+}
+
+.links:hover {
+  @apply bg-gray-800 text-acents;
+}
+
+.links:focus {
+  @apply outline-none
+}
+
+.links:focus-visible {
+  @apply ring ring-purple-500 ring-opacity-75;
+}
+/*
+.link-blue:hover {
+  @apply font-bold text-blue-500;
+}
+
+
+.link-red:hover {
+  @apply font-bold text-red-500;
+}
+*/
+.btn-success {
+  @apply text-sm text-white bg-verde;
+}
+
+.btn:hover {
+  filter: brightness(90%);
+}
+
+.btn-dark {
+  @apply px-4 py-2 bg-black text-white text-center;
+}
+.btn-dark:hover {
+  opacity: 0.8;
+}
+
+.btn-spinner,
+.btn-spinner:after {
+  border-radius: 50%;
+  width: 1.5em;
+  height: 1.5em;
+}
+
+.btn-spinner {
+  font-size: 10px;
+  position: relative;
+  text-indent: -9999em;
+  border-top: .2em solid white;
+  border-right: .2em solid white;
+  border-bottom: .2em solid white;
+  border-left: .2em solid transparent;
+  transform: translateZ(0);
+  animation: spinning 1s infinite linear;
+}
+
+@keyframes spinning {
+  0% { transform: rotate(0deg) }
+  100% { transform: rotate(360deg) }
+}

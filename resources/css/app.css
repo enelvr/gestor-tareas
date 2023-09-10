@@ -1,0 +1,12 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@import "./main.css";
+@import "./components/radius.css";
+@import './components/card.css';
+@import "./components/button.css";
+
+[x-cloak] {
+    display: none;
+}

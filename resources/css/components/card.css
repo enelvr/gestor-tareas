@@ -1,0 +1,38 @@
+.card {
+  @apply bg-white shadow-md rounded-lg px-6 py-2;
+}
+
+.box {
+  @apply w-full bg-white py-4 px-2 shadow sm:rounded-lg sm:px-4;
+}
+
+
+.section {
+  @apply flex flex-wrap mt-2;
+}
+
+.section-reverse {
+  @apply flex flex-wrap mt-2 flex-row-reverse;
+}
+
+.article {
+  @apply w-full px-2 md:w-1/2;
+}
+.article-row {
+  @apply flex flex-row w-full md:w-1/2;
+}
+
+.article-2-3 {
+  @apply w-full px-2 md:w-3/4;
+}
+.article-3 {
+  @apply w-full px-2 md:w-1/3;
+}
+
+.article-4 {
+  @apply w-full px-2 md:w-1/4;
+}
+
+.article-full {
+  @apply w-full px-2;
+}

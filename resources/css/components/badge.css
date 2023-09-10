@@ -1,0 +1,18 @@
+.badge {
+  @apply px-2 inline-flex text-xs leading-5 font-semibold rounded-full max-w-[85px];
+}
+
+.cancelado, .inactivo {
+  @apply bg-red-100 text-red-800;
+}
+
+.pendiente {
+  @apply bg-amber-100 text-amber-800;
+}
+
+.activo, .success  {
+  @apply bg-green-100 text-green-800;
+}
+.confirmado  {
+  @apply bg-sky-100 text-sky-800;
+}
