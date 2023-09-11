@@ -32,7 +32,9 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::resource('users', UsersController::class);
+    Route::group(['middleware' => ['role:admin']], function () {
+        Route::resource('users', UsersController::class);
+        Route::resource('roles', RolesController::class);
+    });
     Route::resource('tasks', TasksController::class);
-    Route::resource('roles', RolesController::class);
 });

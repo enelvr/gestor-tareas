@@ -3,7 +3,7 @@ import { ref } from "vue";
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { useForm } from "@inertiajs/vue3";
 import LButton from '@/Components/Button/LButton.vue';
-import Select from '@/Components/_partials/Select.vue';
+import { showToast } from '@/helpers.js'
 
 const props = defineProps({
     permisos: Object
@@ -22,6 +22,7 @@ const submit = () => {
 
     form.post(route("roles.store"), {
         onStart: () => loading.value = true,
+        onError: (e) => { showToast(e) },
         onFinish: () => loading.value = false
     });
 }

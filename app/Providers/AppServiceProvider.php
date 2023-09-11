@@ -31,12 +31,24 @@ class AppServiceProvider extends ServiceProvider
         setlocale(LC_ALL, 'es_MX', 'es', 'ES', 'es_MX.utf8');
         Schema::defaultStringLength(125);
 
-        if (Auth::check()) {
-            Inertia::share([
-                'roles' => Auth::user()->roles()->pluck('name'),
-                'permissions' => Auth::user()->getAllPermissions()->pluck('name')
-            ]);
-        }
+        Inertia::share([
+          'authroles' => function () {
+            if (Auth::check()) {
+                return Auth::user()->roles()->pluck('name');
+            } else {
+                return [];
+            }
+          },
+  
+          'authpermisos' => function () {
+            if (Auth::check()) {
+              return Auth::user()->getAllPermissions()->pluck('name');
+            } else {
+              return [];
+            }
+          }
+  
+        ]);
     }
 
     private function registerLengthAwarePaginator()

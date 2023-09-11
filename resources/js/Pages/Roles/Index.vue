@@ -4,6 +4,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import Pagination from '@/Components/Pagination/Index.vue';
 import { useForm, router } from "@inertiajs/vue3";
 import { pickBy, debounce } from 'lodash';
+import { showToast } from '@/helpers.js'
 
 const props = defineProps({
   roles: {
@@ -15,7 +16,14 @@ const props = defineProps({
 const deleteItem = (role) => {
   role._method = "DELETE";
   router.delete(
-    route("roles.destroy", role.id)
+    route("roles.destroy", role.id), {
+      onSuccess: () => {
+        showToast()
+      },
+      onError: (error) => {
+        showToast(error)
+      } 
+    }
   );
 }
 

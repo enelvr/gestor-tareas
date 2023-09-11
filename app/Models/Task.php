@@ -18,6 +18,15 @@ class Task extends Model
        return $query->where('title', 'like', '%'.$filters.'%');
     }
 
+    public function scopeByUser($query)
+    {
+        $user = auth()->user();
+        if (!$user->hasRole('admin')) {
+            return $query->where('user_id', $user->id);
+        }
+    }
+
+
     public function user() {
         return $this->belongsTo(User::class);
     }

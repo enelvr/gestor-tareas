@@ -78,7 +78,8 @@ class UsersController extends Controller
         try {
             $validator = Validator::make($request->all(), [
               'name' => 'required',
-              'password' => 'required|min:6'
+              'password' => 'required|min:6',
+              'email'  => 'required|email'
             ]);
       
             $validator->setAttributeNames([
@@ -88,7 +89,7 @@ class UsersController extends Controller
       
             if ($validator->fails()) {
               $errors = $validator->errors()->all();
-              return Redirect::back()->with('error', $errors);
+              return Redirect::back()->withErrors($errors)->with('error', 'Se ha Producido un error!')->withInput();
             }
 
             $request->merge([
@@ -121,7 +122,6 @@ class UsersController extends Controller
     {
         try {
             $user = User::with('roles')->findOrFail($id);
-            \Log::info($user->getAllPermissions()->pluck('name'));
             return Inertia::render('Users/Edit', [
               'roles' => Role::get(),
               'user' => [
@@ -134,7 +134,6 @@ class UsersController extends Controller
             ]);
       
           } catch (\Throwable $th) {
-            \Log::info($th->getMessage());
             return Redirect::back()->with('error', $th->getMessage());
         }
     }
@@ -145,6 +144,19 @@ class UsersController extends Controller
     public function update(Request $request, string $id)
     {
         try {
+          $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email'  => 'required|email'
+          ]);
+    
+          $validator->setAttributeNames([
+            'name' => 'User',
+          ]);
+    
+          if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            return Redirect::back()->withErrors($errors)->with('error', 'Se ha Producido un error!')->withInput();
+          }
             $user = User::findOrFail($id);
             $user->name = $request->name;
             $user->email = $request->email;
@@ -159,7 +171,6 @@ class UsersController extends Controller
             return Redirect::route('users.index')->with('success', 'Registro actualizado con éxito');
       
           } catch (\Throwable $th) {
-            \Log::error($th->getMessage());
             return Redirect::back()->with('error', $th->getMessage());
           }
     }

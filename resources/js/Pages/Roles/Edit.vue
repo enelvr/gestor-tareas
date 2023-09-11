@@ -3,7 +3,7 @@ import { ref, watch } from 'vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { useForm } from "@inertiajs/vue3";
 import LButton from '@/Components/Button/LButton.vue';
-import Select from '@/Components/_partials/Select.vue';
+import { showToast } from '@/helpers.js'
 
 
 const props = defineProps({
@@ -23,7 +23,11 @@ const loading = ref(false);
 
 const submit = () => {
     loading.value = true
-    form.put(route("roles.update", form.id))
+    form.put(route("roles.update", form.id), {
+        onStart: () => { loading.value = true },
+        onError: (e) => { showToast(e) },
+        onFinish: () => { loading.value = false },
+    })
 }
 </script>
 <template>

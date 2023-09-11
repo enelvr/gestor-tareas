@@ -15,6 +15,22 @@ class TasksController extends Controller
   public function __construct()
   {
     $this->middleware('auth:sanctum');
+    $this->middleware([
+      "auth:sanctum",
+      "permission:consultar tarea",
+    ])->only(['index', 'show']);
+    $this->middleware([
+      "auth:sanctum",
+      "permission:crear tarea",
+    ])->only(['create', 'store']);
+    $this->middleware([
+      "auth:sanctum",
+      "permission:actualizar tarea",
+    ])->only(['edit', 'update']);
+    $this->middleware([
+      "auth:sanctum",
+      "permission:borrar tarea",
+    ])->only(['destroy']);
   }
   /**
    * Display a listing of the resource.
@@ -24,6 +40,7 @@ class TasksController extends Controller
     try {
       $query = Task::query()
         ->with('user')
+        ->ByUser()
         ->filter($request->search)
         ->paginate(10)
         ->withQueryString()
@@ -38,25 +55,8 @@ class TasksController extends Controller
 
       $data = ['tasks' => $query];
 
-      $responseData = [
-        'data' => $data,
-        'message' => 'éxito.',
-      ];
-
-      return $request->is('api/*')
-      ? response()->json($responseData, 201)
-      : Inertia::render('Tasks/Index', $data);
-
+      return Inertia::render('Tasks/Index', $data);
     } catch (\Throwable $th) {
-
-      \Log::error([
-        'Code' => 500,
-        'location' => 'TasksControllers',
-        'Method' => 'Index',
-        'Message' => $th->getMessage(),
-        'line' =>  $th->getLine()
-      ]);
-
       return Redirect::back()->with('error', $th->getMessage());
     }
   }
@@ -93,18 +93,21 @@ class TasksController extends Controller
 
       if ($validator->fails()) {
         $errors = $validator->errors()->all();
-        return Redirect::back()->with('error', $errors);
+        return Redirect::back()->withErrors($errors)->with('error', 'Se ha Producido un error!')->withInput();
       }
 
-      $request->merge([
-        'user_id' => auth()->user()->id
-      ]);
+      $user = auth()->user();
+
+      if (!$user->hasRole('admin')) {
+        $request->merge([
+          'user_id' => auth()->user()->id
+        ]);
+      }
 
       Task::create($request->all());
 
       return Redirect::route('tasks.index')->with('success', 'Registro creado con éxito');
     } catch (\Throwable $th) {
-      \Log::info($th->getMessage());
       return Redirect::back()->with('error', $th->getMessage());
     }
   }
@@ -121,7 +124,6 @@ class TasksController extends Controller
         'task' => Task::with('user')->findOrFail($id)
       ]);
     } catch (\Throwable $th) {
-
       return Redirect::back()->with('error', $th->getMessage());
     }
   }
@@ -135,10 +137,10 @@ class TasksController extends Controller
 
       return Inertia::render('Tasks/Edit', [
         'users' => User::get(),
-        'task' => Task::with('user')->findOrFail($id)
+        'task' => Task::findOrFail($id)
       ]);
-    } catch (\Throwable $th) {
 
+    } catch (\Throwable $th) {
       return Redirect::back()->with('error', $th->getMessage());
     }
   }
@@ -149,14 +151,34 @@ class TasksController extends Controller
   public function update(Request $request, string $id)
   {
     try {
+      $validator = Validator::make($request->all(), [
+        'title' => 'required|min:6',
+      ]);
+
+      $validator->setAttributeNames([
+        'title' => 'Titulo',
+      ]);
+
+      if ($validator->fails()) {
+        $errors = $validator->errors()->all();
+        return Redirect::back()->withErrors($errors)->with('error', 'Se ha Producido un error!')->withInput();
+      }
+
       $task = Task::findOrFail($id);
+
+
+      $user = auth()->user();
+
+      if ($user->hasRole('admin')) {
+        $task->user_id = $request->user_id;
+      }
+
       $task->title = $request->title;
       $task->description = $request->description;
       $task->save();
 
       return Redirect::route('tasks.index')->with('success', 'Registro actualizado con éxito');
     } catch (\Throwable $th) {
-      \Log::error($th->getMessage());
       return Redirect::back()->with('error', $th->getMessage());
     }
   }
@@ -173,7 +195,6 @@ class TasksController extends Controller
 
       return Redirect::back()->with('success', 'Registro eliminado con éxito.');
     } catch (\Throwable $th) {
-
       return Redirect::back()->with('error', 'Error al intentar eliminar el registro.');
     }
   }

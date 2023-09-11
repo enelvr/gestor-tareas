@@ -4,6 +4,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import { useForm } from "@inertiajs/vue3";
 import LButton from '@/Components/Button/LButton.vue';
 import Select from '@/Components/_partials/Select.vue';
+import { showToast } from '@/helpers.js'
 
 const props = defineProps({
     roles: Object,
@@ -16,6 +17,7 @@ const form = useForm({
     rol: '',
     email: '',
     password: '',
+    user_id: '',
 });
 
 const loading = ref(false);
@@ -24,6 +26,7 @@ const submit = () => {
 
     form.post(route("users.store"), {
         onStart: () => loading.value = true,
+        onError: (e) => { showToast(e) },
         onFinish: () => loading.value = false
     });
 }
@@ -50,7 +53,7 @@ const submit = () => {
                         </div>
                         <div class="article">
                             <label class="label mb-1">Roles</label>
-                            <Select v-model="form.rol" :items="roles" :itemLabel="name" :itemKey="name"></Select>
+                            <Select v-model="form.rol" :items="roles" itemLabel="name" itemKey="name"></Select>
                         </div>
                     </div>
 

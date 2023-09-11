@@ -7,6 +7,8 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import FlashMessages from "@/Components/Alerts/FlashMessages.vue";
+
 
 defineProps({
     title: String,
@@ -52,13 +54,13 @@ const logout = () => {
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
-                                <NavLink :href="route('users.index')" :active="route().current('users.*')">
+                                <NavLink v-if="$page.props.authroles.includes('admin')" :href="route('users.index')" :active="route().current('users.*')">
                                     Usuarios
                                 </NavLink>
-                                <NavLink :href="route('roles.index')" :active="route().current('roles.*')">
+                                <NavLink v-if="$page.props.authroles.includes('admin')" :href="route('roles.index')" :active="route().current('roles.*')">
                                     Roles
                                 </NavLink>
-                                <NavLink :href="route('tasks.index')" :active="route().current('tasks.*')">
+                                <NavLink v-if="$page.props.authpermisos.includes('consultar tarea')" :href="route('tasks.index')" :active="route().current('tasks.*')">
                                     Tareas
                                 </NavLink>
                             </div>
@@ -160,26 +162,25 @@ const logout = () => {
                                     </template>
 
                                     <template #content>
-                                        <!-- Account Management -->
                                         <div class="block px-4 py-2 text-xs text-gray-400">
                                             Manage Account
                                         </div>
 
-                                        <DropdownLink :href="route('profile.show')">
+                                        <!--<DropdownLink :href="route('profile.show')">
                                             Profile
                                         </DropdownLink>
 
                                         <DropdownLink v-if="$page.props.jetstream.hasApiFeatures"
                                             :href="route('api-tokens.index')">
                                             API Tokens
-                                        </DropdownLink>
+                                        </DropdownLink>-->
 
                                         <div class="border-t border-gray-200" />
 
-                                        <!-- Authentication -->
+                                        
                                         <form @submit.prevent="logout">
                                             <DropdownLink as="button">
-                                                Log Out
+                                                Salir
                                             </DropdownLink>
                                         </form>
                                     </template>
@@ -235,19 +236,19 @@ const logout = () => {
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.show')" :active="route().current('profile.show')">
+                            <!--<ResponsiveNavLink :href="route('profile.show')" :active="route().current('profile.show')">
                                 Profile
                             </ResponsiveNavLink>
 
                             <ResponsiveNavLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')"
                                 :active="route().current('api-tokens.index')">
                                 API Tokens
-                            </ResponsiveNavLink>
+                            </ResponsiveNavLink>-->
 
                             <!-- Authentication -->
                             <form method="POST" @submit.prevent="logout">
                                 <ResponsiveNavLink as="button">
-                                    Log Out
+                                    Salir
                                 </ResponsiveNavLink>
                             </form>
 
@@ -327,6 +328,7 @@ const logout = () => {
             <!-- Page Content -->
             <div class="py-6">
                 <div class="max-w-7xl mx-auto sm:px-2 lg:px-2">
+                    <FlashMessages></FlashMessages>
                     <main class="animate-fade">
                         <slot />
                     </main>

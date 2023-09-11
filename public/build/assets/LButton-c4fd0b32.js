@@ -1,0 +1,1 @@
+import{k as r,o as s,e as t,f as d,r as l}from"./app-55d67c3b.js";const c=["disabled"],i={key:0,class:"btn-spinner mr-2"},u={__name:"LButton",props:{disabled:Boolean},setup(o){const a=o,e=r(()=>a.disabled);return(n,m)=>(s(),t("button",{disabled:e.value,class:"flex items-center disabled:bg-gray-600"},[e.value?(s(),t("div",i)):d("",!0),l(n.$slots,"default")],8,c))}};export{u as _};
