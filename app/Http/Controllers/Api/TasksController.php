@@ -39,7 +39,7 @@ class TasksController extends Controller
 
       return response()->json([
         'data' => $data,
-        'message' => 'éxito.',
+        'message' => 'OK.',
       ], 201);
     } catch (\Throwable $th) {
 
